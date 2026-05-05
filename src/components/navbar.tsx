@@ -12,10 +12,10 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: "Technology", href: "#technology" },
-    { name: "Solutions", href: "#solutions" },
-    { name: "Services", href: "#services" },
-    { name: "About", href: "#about" },
+    { name: "Solutions", href: "/solutions" },
+    { name: "Architecture", href: "/architecture" },
+    { name: "Technology", href: "/technology" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -40,13 +40,13 @@ export const Navbar = () => {
       </div>
       
       <div className="hidden lg:flex items-center gap-10">
-        {["Technology", "Solutions", "Services", "About"].map((item) => (
+        {navLinks.map((link) => (
           <Link 
-            key={item} 
-            href={`#${item.toLowerCase()}`}
+            key={link.name} 
+            href={link.href}
             className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-bold tracking-[0.2em] uppercase"
           >
-            {item}
+            {link.name}
           </Link>
         ))}
       </div>
