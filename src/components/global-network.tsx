@@ -15,14 +15,14 @@ export const GlobalNetwork = () => {
   ];
 
   return (
-    <div className="relative w-full h-[600px] bg-slate-950/50 rounded-[48px] overflow-hidden border border-white/5 group">
+    <div className="relative w-full h-150 bg-slate-950/50 rounded-[48px] overflow-hidden border border-white/5 group">
       {/* Abstract World Map Silhouette (SVG) */}
       <svg className="absolute inset-0 w-full h-full opacity-[0.03] scale-150" viewBox="0 0 1000 500">
         <path fill="currentColor" d="M150,100 Q200,50 300,100 T500,100 T700,150 T850,200 L850,400 Q700,450 500,400 T200,400 Z" />
         {/* Simple abstract map paths */}
       </svg>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-slate-950 to-transparent" />
       
       {/* Pulsing Grid Background */}
       <div className="absolute inset-0 perspective-grid opacity-20" />
@@ -41,7 +41,7 @@ export const GlobalNetwork = () => {
             <motion.div 
               animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-[-10px] bg-pink-500/30 rounded-full blur-sm"
+              className="absolute -inset-2.5 bg-pink-500/30 rounded-full blur-sm"
             />
             <div className="w-3 h-3 bg-pink-500 rounded-full border-2 border-white shadow-[0_0_15px_rgba(255,0,128,0.8)]" />
             

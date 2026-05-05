@@ -14,13 +14,13 @@
 @variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 :root {
-  --background: #FFFFFF;
-  --foreground: #0f172a;
+  --background: #F5F6F8;
+  --foreground: #2d3748;
 }
 
 [data-theme='dark'] {
-  --background: #020617;
-  --foreground: #FFFFFF;
+  --background: #0f1419;
+  --foreground: #E5E7EB;
 }
 
 body {
@@ -87,13 +87,13 @@ body {
 }
 
 :root {
-  --nav-bg: 255, 255, 255;
-  --border-rgb: 0, 0, 0;
+  --nav-bg: 245, 246, 248;
+  --border-rgb: 100, 116, 139;
 }
 
 [data-theme='dark'] {
-  --nav-bg: 2, 6, 23;
-  --border-rgb: 255, 255, 255;
+  --nav-bg: 15, 20, 25;
+  --border-rgb: 229, 231, 235;
 }
 
 .glass-hero {
@@ -105,8 +105,8 @@ body {
 }
 
 [data-theme='dark'] .glass-hero {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .glass-card {
@@ -126,8 +126,8 @@ body {
 }
 
 [data-theme='dark'] .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .glass-card:hover {
@@ -137,8 +137,8 @@ body {
 }
 
 [data-theme='dark'] .glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .perspective-grid {
@@ -275,9 +275,9 @@ body {
 }
 
 [data-theme='dark'] .glow-card-container {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.10);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme='dark'] .glow-card-container::before {
@@ -307,7 +307,7 @@ body {
 }
 
 [data-theme='dark'] .mesh-blob {
-  opacity: 0.08;
+  opacity: 0.12;
   mix-blend-mode: screen;
 }
 

@@ -34,6 +34,8 @@ export const Navbar = () => {
               width={180} 
               height={48} 
               className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              loading="eager"
+              priority
             />
           </div>
         </Link>
@@ -52,12 +54,6 @@ export const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* System Status Indicator */}
-        <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-          <span className="text-[9px] font-bold tracking-widest text-slate-500 dark:text-white/40 uppercase">Systems Operational</span>
-        </div>
-
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

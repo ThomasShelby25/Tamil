@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Globe, MessageSquare, Send, ArrowRight } from "lucide-react";
+import { Globe, MessageSquare, Send } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 
 export default function ContactPage() {
