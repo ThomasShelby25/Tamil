@@ -336,7 +336,7 @@ export default function Home() {
       <section id="about" className="relative z-10 py-48 px-6 bg-slate-900 text-white overflow-hidden">
         <NeuralNetwork />
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -344,7 +344,7 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <span className="text-pink-500 text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">The Neural Fabric</span>
-              <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-[0.8] mb-12 italic">CORE<br />ARCHITECTURE</h2>
+              <h2 className="text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl font-black tracking-tighter leading-[0.85] mb-12 italic max-w-[8.8ch]">CORE<br />ARCHITECTURE</h2>
               <p className="text-white/60 text-xl leading-relaxed mb-12 max-w-lg">
                 Our infrastructure is built on self-healing neural nodes that anticipate load and reconfigure in milliseconds, providing the first truly autonomous cloud environment.
               </p>
@@ -362,7 +362,7 @@ export default function Home() {
               </div>
             </motion.div>
             
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6 lg:mt-40">
               {[
                 { icon: <Globe />, label: "Regions", val: "24" },
                 { icon: <Zap />, label: "Latency", val: "<1ms" },
@@ -467,17 +467,36 @@ export default function Home() {
       </section>
 
       {/* Global Presence Section */}
-      <section className="relative z-10 py-48 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-            <div className="max-w-2xl">
-              <span className="text-pink-600 text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">Omnipresent Infrastructure</span>
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-none text-foreground italic">GLOBAL REACH.</h2>
+      <section className="relative z-10 py-36 md:py-44 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-7 max-w-3xl">
+              <span className="text-pink-600 text-[10px] font-bold tracking-[0.4em] uppercase mb-5 block">Omnipresent Infrastructure</span>
+              <h2 className="text-5xl md:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.92] text-foreground italic max-w-[10ch]">GLOBAL REACH.</h2>
             </div>
-            <p className="text-slate-500 dark:text-white/40 max-w-sm mb-4">Our neural mesh spans 6 continents, ensuring your users are never more than 1ms away from your application.</p>
+
+            <div className="lg:col-span-5">
+              <div className="glass-card p-8 md:p-10 border border-slate-200 dark:border-white/20">
+                <p className="text-slate-500 dark:text-white/60 text-lg leading-relaxed mb-8">
+                  Our neural mesh spans 6 continents, ensuring your users are never more than 1ms away from your application.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="rounded-2xl bg-slate-50 dark:bg-white/8 border border-slate-200 dark:border-white/20 p-4">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-slate-400 dark:text-white/50">Regions</p>
+                    <p className="text-2xl font-black mt-2">24</p>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 dark:bg-white/8 border border-slate-200 dark:border-white/20 p-4">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-slate-400 dark:text-white/50">Avg Latency</p>
+                    <p className="text-2xl font-black mt-2">0.82ms</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <GlobalNetwork />
+
+          <div className="relative rounded-[56px] border border-slate-200 dark:border-white/25 dark:bg-slate-950/60 bg-linear-to-br from-slate-950/70 via-slate-950/40 to-slate-900/10 p-3 md:p-4 shadow-[0_30px_120px_rgba(0,0,0,0.35)]">
+            <GlobalNetwork />
+          </div>
         </div>
       </section>
 
