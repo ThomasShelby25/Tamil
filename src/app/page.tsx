@@ -240,7 +240,7 @@ export default function Home() {
                   transition={{ type: "tween", ease: "circOut" }}
                 />
               </button>
-              <button className="magnetic-button w-full sm:w-auto px-10 py-5 glass-card font-black text-xs tracking-[0.2em] uppercase rounded-full border border-slate-200 dark:border-white/10 text-foreground">
+              <button className="magnetic-button w-full sm:w-auto px-10 py-5 glass-card font-black text-xs tracking-[0.2em] uppercase rounded-full border border-slate-200 dark:border-white/20 text-foreground">
                 Watch Vision Film
               </button>
             </motion.div>
@@ -259,7 +259,7 @@ export default function Home() {
       </section>
 
       {/* Trusted By Section & Security Bar */}
-      <section className="relative z-10 py-20 px-6 overflow-hidden bg-slate-50 dark:bg-white/1 border-b border-slate-100 dark:border-white/5">
+      <section className="relative z-10 py-20 px-6 overflow-hidden bg-slate-50 dark:bg-slate-950/40 border-b border-slate-100 dark:border-white/15">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center mb-16">
             <p className="text-[10px] font-black tracking-[0.4em] uppercase text-slate-400 mb-12">Pioneering with global leaders</p>
@@ -271,7 +271,7 @@ export default function Home() {
           </div>
           
           {/* Security & Compliance Bar */}
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 pt-16 border-t border-slate-200 dark:border-white/10 opacity-40">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 pt-16 border-t border-slate-200 dark:border-white/15 opacity-40">
             {[
               { label: "SOC2 TYPE II", icon: <Lock className="w-4 h-4" /> },
               { label: "GDPR COMPLIANT", icon: <Shield className="w-4 h-4" /> },
@@ -304,7 +304,7 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-4">
                 {["AWS", "Azure", "GitHub", "Slack", "Discord", "Terraform", "Kubernetes"].map(tag => (
-                  <span key={tag} className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-widest">{tag}</span>
+                  <span key={tag} className="px-4 py-2 rounded-full bg-white/8 border border-white/20 text-[10px] font-bold tracking-widest">{tag}</span>
                 ))}
               </div>
             </GlowCard>
@@ -314,12 +314,12 @@ export default function Home() {
                 <h3 className="text-3xl font-black mb-4 tracking-tighter italic">AUTO-SCALING</h3>
                 <p className="text-slate-500 dark:text-white/40 text-sm">Dynamic resource allocation based on real-time traffic patterns.</p>
               </div>
-              <div className="pt-8 border-t border-slate-100 dark:border-white/5">
+              <div className="pt-8 border-t border-slate-100 dark:border-white/15">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-[8px] font-bold uppercase tracking-widest">Efficiency</span>
                   <span className="text-pink-600 font-bold">99%</span>
                 </div>
-                <div className="w-full h-1 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                <div className="w-full h-1 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: "99%" }}
@@ -369,7 +369,7 @@ export default function Home() {
                 { icon: <Users />, label: "Users", val: "2M+" },
                 { icon: <BarChart3 />, label: "Growth", val: "400%" },
               ].map((item, i) => (
-                <div key={i} className="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-colors">
+                <div key={i} className="p-8 bg-white/8 border border-white/20 rounded-3xl hover:bg-white/15 transition-colors">
                   <div className="text-pink-500 mb-4">{item.icon}</div>
                   <div className="text-3xl font-black mb-1 tracking-tighter">{item.val}</div>
                   <div className="text-[8px] font-bold tracking-[0.2em] uppercase text-white/40">{item.label}</div>
@@ -413,7 +413,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative z-10 py-48 px-6 bg-slate-50 dark:bg-white/1">
+      <section id="contact" className="relative z-10 py-48 px-6 bg-slate-50 dark:bg-slate-950/40">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
             <div>
@@ -447,15 +447,15 @@ export default function Home() {
               <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Full Name</label>
-                  <input type="text" className="w-full bg-transparent border-b border-slate-200 dark:border-white/10 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="John Doe" />
+                  <input type="text" className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="John Doe" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Company Email</label>
-                  <input type="email" className="w-full bg-transparent border-b border-slate-200 dark:border-white/10 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="john@company.com" />
+                  <input type="email" className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="john@company.com" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Message</label>
-                  <textarea className="w-full bg-transparent border-b border-slate-200 dark:border-white/10 py-4 focus:border-pink-500 outline-none transition-colors resize-none h-32" placeholder="Tell us about your project" />
+                  <textarea className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors resize-none h-32" placeholder="Tell us about your project" />
                 </div>
                 <button className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-black font-black text-xs tracking-[0.3em] uppercase rounded-full flex items-center justify-center gap-4 group">
                   Send Inquiry <Send className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
@@ -545,7 +545,7 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <GlowCard className="p-12 h-full">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-10 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 text-pink-600">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/10 flex items-center justify-center mb-10 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 text-pink-600">
                     {tech.icon}
                   </div>
                   <span className="text-pink-600 text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block">{tech.tag}</span>
