@@ -1,11 +1,66 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Globe, MessageSquare, Send } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: "" }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setErrors({});
+    setSuccess(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.errors) {
+          const errorMap: Record<string, string> = {};
+          data.errors.forEach((err: { field: string; message: string }) => {
+            errorMap[err.field] = err.message;
+          });
+          setErrors(errorMap);
+        } else {
+          setError(data.error || "Failed to send message. Please try again.");
+        }
+        return;
+      }
+
+      setSuccess(true);
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (err) {
+      setError("An error occurred. Please try again later.");
+      console.error("Contact form error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-pink-500 selection:text-white transition-colors duration-300">
       <div className="mesh-bg">
@@ -71,21 +126,62 @@ export default function ContactPage() {
             </div>
             
             <div className="glass-card p-12">
-              <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-8" onSubmit={handleSubmit}>
+                {success && (
+                  <div className="p-4 bg-green-500/10 border border-green-500 rounded-lg text-green-600 text-sm">
+                    ✓ Thank you! We'll get back to you shortly.
+                  </div>
+                )}
+                {error && (
+                  <div className="p-4 bg-red-500/10 border border-red-500 rounded-lg text-red-600 text-sm">
+                    ✗ {error}
+                  </div>
+                )}
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Full Name</label>
-                  <input type="text" className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="John Doe" />
+                  <input 
+                    type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors disabled:opacity-50" 
+                    placeholder="John Doe" 
+                  />
+                  {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Company Email</label>
-                  <input type="email" className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors" placeholder="john@company.com" />
+                  <input 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors disabled:opacity-50" 
+                    placeholder="john@company.com" 
+                  />
+                  {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold tracking-widest uppercase text-slate-400">Message</label>
-                  <textarea className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors resize-none h-32" placeholder="Tell us about your project" />
+                  <textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="w-full bg-transparent border-b border-slate-200 dark:border-white/20 py-4 focus:border-pink-500 outline-none transition-colors resize-none h-32 disabled:opacity-50" 
+                    placeholder="Tell us about your project" 
+                  />
+                  {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                 </div>
-                <button className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-black font-black text-xs tracking-[0.3em] uppercase rounded-full flex items-center justify-center gap-4 group hover:gap-6 transition-all">
-                  Send Inquiry <Send className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                <button 
+                  type="submit"
+                  disabled={loading || success}
+                  className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-black font-black text-xs tracking-[0.3em] uppercase rounded-full flex items-center justify-center gap-4 group hover:gap-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "Sending..." : success ? "Sent!" : "Send Inquiry"} 
+                  <Send className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </button>
               </form>
             </div>
