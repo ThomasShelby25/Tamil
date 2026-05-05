@@ -334,6 +334,16 @@ body {
   animation: shimmer 8s linear infinite;
 }
 
+/* Cursor glow styles (moved from inline styles) */
+.cursor-glow {
+  /* x/y are controlled by framer-motion via inline style motion values */
+  background: radial-gradient(circle 400px at center, rgba(255, 0, 128, 0.1), transparent 80%);
+}
+
+.cursor-glow-inner {
+  background: radial-gradient(circle 400px at center, rgba(255, 0, 128, 0.08), transparent 80%);
+}
+
 [data-theme='dark'] .text-shimmer {
   background: linear-gradient(
     90deg,

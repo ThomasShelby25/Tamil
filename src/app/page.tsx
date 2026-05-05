@@ -149,12 +149,8 @@ export default function Home() {
 
       {/* Special Element: Cursor Follow Glow */}
       <motion.div 
-        className="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          background: "radial-gradient(circle 400px at center, rgba(255, 0, 128, 0.1), transparent 80%)",
-        }}
+        className="cursor-glow fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20"
+        style={{ x: cursorXSpring, y: cursorYSpring }}
       />
 
       {/* Background 3D Floating Elements */}
@@ -215,7 +211,7 @@ export default function Home() {
                 className="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20"
                 aria-hidden
               >
-                <div style={{ width: "100%", height: "100%", background: "radial-gradient(circle 400px at center, rgba(255, 0, 128, 0.08), transparent 80%)" }} />
+                <div className="w-full h-full cursor-glow-inner" />
               </motion.div>
             )}
 
