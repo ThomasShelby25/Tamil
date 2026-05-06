@@ -11,6 +11,10 @@ const NeuralNetwork = dynamic(() => import("@/components/neural-network").then(m
 export default function ArchitecturePage() {
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-pink-500 selection:text-white transition-colors duration-300">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="ambient-orb theme-orb-blue top-[-5rem] right-[-6rem] h-[28rem] w-[28rem]" />
+        <div className="ambient-orb theme-orb-pink bottom-[-8rem] left-[-4rem] h-[24rem] w-[24rem]" />
+      </div>
       <div className="mesh-bg">
         <motion.div 
           animate={{ 
@@ -31,12 +35,12 @@ export default function ArchitecturePage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="max-w-6xl w-full mx-auto text-center"
+          className="max-w-6xl w-full mx-auto text-center relative z-10"
         >
-          <span className="inline-block px-4 py-1.5 mb-8 rounded-full border border-pink-500/20 bg-pink-500/5 text-pink-600 text-[10px] font-bold tracking-[0.3em] uppercase">
+          <span className="inline-block px-4 py-1.5 mb-8 rounded-full border border-pink-500/20 bg-pink-500/5 text-pink-600 text-[10px] font-bold tracking-[0.3em] uppercase shimmer-border">
             The Neural Fabric
           </span>
-          <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 italic">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 italic text-gradient">
             CORE<br />ARCHITECTURE
           </h1>
           <p className="text-lg md:text-2xl text-slate-500 dark:text-white/40 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -46,7 +50,8 @@ export default function ArchitecturePage() {
       </section>
 
       {/* Architecture Details */}
-      <section className="relative z-10 py-32 px-6 bg-slate-900 text-white">
+      <section className="relative z-10 py-32 px-6 bg-slate-900 text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,0,128,0.18),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(121,40,202,0.16),transparent_30%)]" />
         <NeuralNetwork />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
@@ -83,7 +88,7 @@ export default function ArchitecturePage() {
                 { icon: <Users />, label: "Users", val: "2M+" },
                 { icon: <BarChart3 />, label: "Growth", val: "400%" },
               ].map((item, i) => (
-                <div key={i} className="p-8 bg-white/8 border border-white/20 rounded-3xl hover:bg-white/15 transition-colors">
+                <div key={i} className="p-8 bg-white/8 border border-white/20 rounded-3xl hover:bg-white/15 transition-colors shimmer-border backdrop-blur-sm">
                   <div className="text-pink-500 mb-4">{item.icon}</div>
                   <div className="text-3xl font-black mb-1 tracking-tighter">{item.val}</div>
                   <div className="text-[8px] font-bold tracking-[0.2em] uppercase text-white/40">{item.label}</div>

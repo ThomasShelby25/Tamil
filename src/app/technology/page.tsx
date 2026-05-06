@@ -47,6 +47,10 @@ export default function TechnologyPage() {
 
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-pink-500 selection:text-white transition-colors duration-300">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="ambient-orb theme-orb-pink top-[-6rem] left-[-6rem] h-96 w-96" />
+        <div className="ambient-orb theme-orb-violet top-1/4 right-[-4rem] h-[26rem] w-[26rem]" />
+      </div>
       <div className="mesh-bg">
         <motion.div 
           animate={{ 
@@ -67,12 +71,12 @@ export default function TechnologyPage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="max-w-6xl w-full mx-auto text-center"
+          className="max-w-6xl w-full mx-auto text-center relative z-10"
         >
-          <span className="inline-block px-4 py-1.5 mb-8 rounded-full border border-pink-500/20 bg-pink-500/5 text-pink-600 text-[10px] font-bold tracking-[0.3em] uppercase">
+          <span className="inline-block px-4 py-1.5 mb-8 rounded-full border border-pink-500/20 bg-pink-500/5 text-pink-600 text-[10px] font-bold tracking-[0.3em] uppercase shimmer-border">
             Core Capabilities
           </span>
-          <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 italic">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 italic text-gradient">
             FLUID MOTION
           </h1>
           <p className="text-lg md:text-2xl text-slate-500 dark:text-white/40 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -91,7 +95,7 @@ export default function TechnologyPage() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="group p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/2 hover:border-pink-600 dark:hover:border-pink-500 hover:shadow-lg transition-all duration-300"
+                className="group p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50/90 dark:bg-white/2 hover:border-pink-600 dark:hover:border-pink-500 hover:shadow-lg transition-all duration-300 shimmer-border"
               >
                 <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/10 flex items-center justify-center mb-6 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 text-pink-600">
                   {tech.icon}
@@ -108,7 +112,7 @@ export default function TechnologyPage() {
       {/* Technical Specs */}
       <section className="relative z-10 py-32 px-6 bg-slate-50 dark:bg-slate-950/40">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-24 italic text-center">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-24 italic text-center text-gradient">
             Performance Benchmarks
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -123,7 +127,7 @@ export default function TechnologyPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className="text-center p-8 rounded-2xl border border-slate-200 dark:border-white/10"
+                className="text-center p-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-sm shimmer-border"
               >
                 <div className="text-4xl mb-4">{metric.icon}</div>
                 <div className="text-3xl font-black mb-2">{metric.value}</div>

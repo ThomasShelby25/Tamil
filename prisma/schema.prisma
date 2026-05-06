@@ -18,3 +18,68 @@ model ContactSubmission {
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 }
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String?
+  country           String?
+  userType          String   @default("free") // free, pro, enterprise
+  isActive          Boolean  @default(true)
+  totalTransactions Int      @default(0)
+  totalVolume       Float    @default(0)
+  transactions      Transaction[]
+  analyticsEvents   AnalyticsEvent[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  currency      String   @default("USD")
+  status        String   @default("pending") // pending, completed, failed
+  transactionType String @default("transfer") // transfer, settlement, payment
+  fromCountry   String?
+  toCountry     String?
+  processingTime Int?    // in milliseconds
+  metadata      String?  // JSON string for additional data
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model AnalyticsEvent {
+  id            String   @id @default(cuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  eventType     String   // page_view, button_click, form_submit, etc
+  eventName     String
+  properties    String?  // JSON string
+  sourceUrl     String?
+  userAgent     String?
+  ipAddress     String?
+  createdAt     DateTime @default(now())
+  @@index([eventType])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model SystemHealth {
+  id              String   @id @default(cuid())
+  status          String   @default("healthy") // healthy, degraded, down
+  uptime          Float    @default(99.99) // percentage
+  responseTime    Float    @default(0) // milliseconds
+  errorCount      Int      @default(0)
+  requestCount    Int      @default(0)
+  database        String   @default("healthy")
+  emailService    String   @default("healthy")
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([createdAt])
+}
