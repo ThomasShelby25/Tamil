@@ -4,6 +4,7 @@ import { createSuccessResponse, createErrorResponse } from "@/lib/api/response";
 import { checkRateLimit, getRateLimitInfo } from "@/lib/api/rate-limit";
 import { sendEmail } from "@/lib/email/resend";
 import { getContactConfirmationEmail, getContactNotificationEmail } from "@/lib/email/templates";
+import { prisma } from "@/lib/db/prisma";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -36,17 +37,41 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Validate input
-    const validation = validateContactForm(body);
-    if ("errors" in validation && !("success" in validation && validation.success === false)) {
-      // This is the success case, continue
-    } else if ("errors" in validation) {
+    let validatedData;
+    try {
+      validatedData = validateContactForm(body);
+    } catch (error) {
+      if (error instanceof Error) {
+        const zodError = error as unknown as {
+          errors?: Array<{ path?: string[]; message: string }>;
+        };
+        const errors = zodError.errors?.map?.((e) => ({
+          field: e.path?.join?.(".") || "unknown",
+          message: e.message
+        })) || [{ field: "unknown", message: error.message }];
+        return NextResponse.json(
+          createErrorResponse("Validation failed", errors),
+          { status: 400 }
+        );
+      }
       return NextResponse.json(
-        createErrorResponse("Validation failed", validation.errors),
+        createErrorResponse("Validation failed"),
         { status: 400 }
       );
     }
+    const normalizedIp = clientIp.split(",")[0]?.trim() || "unknown";
 
-    const validatedData = body; // Already validated by the schema
+    const savedSubmission = await prisma.contactSubmission.create({
+      data: {
+        name: validatedData.name,
+        email: validatedData.email,
+        message: validatedData.message,
+        sourceIp: normalizedIp,
+      },
+    });
+
+    let confirmationEmailSent = false;
+    let notificationEmailSent = false;
 
     // Send confirmation email to user
     try {
@@ -54,6 +79,7 @@ export const POST = async (request: NextRequest) => {
         to: validatedData.email,
         ...getContactConfirmationEmail(validatedData.name),
       });
+      confirmationEmailSent = true;
     } catch (emailError) {
       console.error("Failed to send confirmation email:", emailError);
       // Continue anyway - still save the submission
@@ -70,18 +96,30 @@ export const POST = async (request: NextRequest) => {
           validatedData.message
         ),
       });
+      notificationEmailSent = true;
     } catch (emailError) {
       console.error("Failed to send notification email:", emailError);
       // Continue anyway
+    }
+
+    if (confirmationEmailSent || notificationEmailSent) {
+      await prisma.contactSubmission.update({
+        where: { id: savedSubmission.id },
+        data: {
+          confirmationEmailSent,
+          notificationEmailSent,
+        },
+      });
     }
 
     return NextResponse.json(
       createSuccessResponse({
         message: "Thank you for your inquiry. We'll get back to you shortly!",
         submitted: {
+          id: savedSubmission.id,
           name: validatedData.name,
           email: validatedData.email,
-          timestamp: new Date().toISOString(),
+          timestamp: savedSubmission.createdAt.toISOString(),
         },
       }),
       { status: 200 }

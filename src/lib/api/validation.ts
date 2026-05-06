@@ -21,22 +21,6 @@ export const ContactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof ContactFormSchema>;
 
-export const validateContactForm = (data: unknown) => {
-  try {
-    return ContactFormSchema.parse(data);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        errors: error.issues.map(e => ({
-          field: e.path.join("."),
-          message: e.message
-        }))
-      };
-    }
-    return {
-      success: false,
-      errors: [{ field: "unknown", message: "Validation failed" }]
-    };
-  }
+export const validateContactForm = (data: unknown): ContactFormData => {
+  return ContactFormSchema.parse(data);
 };
