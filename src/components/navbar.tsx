@@ -34,19 +34,15 @@ export const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-          <div className="relative w-8 sm:w-10 h-8 sm:h-10 overflow-hidden rounded-lg sm:rounded-xl bg-purple-600 flex items-center justify-center text-xs sm:text-sm font-bold">
-             <Image 
-               src="/3.png" 
-               alt="Logo" 
-               width={40} 
-               height={40} 
-               className="object-cover"
-             />
-          </div>
-          <span className="hidden sm:inline font-bold text-lg sm:text-xl tracking-tighter uppercase italic text-white group-hover:text-purple-400 transition-colors">
-            Velsaim
-          </span>
+        <Link href="/" className="flex items-center group">
+          <Image
+            src="/3.png"
+            alt="Velsaim"
+            width={804}
+            height={175}
+            priority
+            className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+          />
         </Link>
         
         <div className="hidden lg:flex items-center gap-6 xl:gap-8">
