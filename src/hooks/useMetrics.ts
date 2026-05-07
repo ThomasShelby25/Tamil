@@ -47,10 +47,14 @@ export function useMetrics(): UseMetricsReturn {
   };
 
   useEffect(() => {
-    fetchMetrics();
+    queueMicrotask(() => {
+      void fetchMetrics();
+    });
 
     // Refresh metrics every 60 seconds
-    const interval = setInterval(fetchMetrics, 60000);
+    const interval = setInterval(() => {
+      void fetchMetrics();
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);

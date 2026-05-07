@@ -29,7 +29,6 @@ export interface RealTimeMetrics {
 export async function getDashboardStats(): Promise<DashboardStats> {
   const now = new Date();
   const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
   // User stats
   const totalUsers = await prisma.user.count();
@@ -56,7 +55,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   )._sum.amount || 0;
 
   const completedTransactions = allTransactions.find((t) => t.status === "completed");
-  const completedVolume = completedTransactions?._sum.amount || 0;
   const completedCount = completedTransactions?._count || 0;
 
   const averageTransactionAmount = totalTransactions > 0 ? totalVolume / totalTransactions : 0;
@@ -193,7 +191,7 @@ export async function trackEvent(
   eventType: string,
   eventName: string,
   userId?: string,
-  properties?: Record<string, any>
+  properties?: Record<string, unknown>
 ) {
   try {
     await prisma.analyticsEvent.create({

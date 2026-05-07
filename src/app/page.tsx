@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Navbar } from "@/components/navbar";
 import { ArrowRight, Globe, Zap, Shield, BarChart3, Wallet, Cpu } from "lucide-react";

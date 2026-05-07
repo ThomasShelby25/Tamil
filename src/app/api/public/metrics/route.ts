@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getRealTimeMetrics } from "@/lib/analytics/dashboard";
 import { createSuccessResponse, createErrorResponse } from "@/lib/api/response";
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     const metrics = await getRealTimeMetrics();
 

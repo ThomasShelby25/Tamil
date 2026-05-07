@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/navbar";
 import { RefreshCw, TrendingUp, Users, Zap } from "lucide-react";
@@ -83,32 +83,17 @@ export default function AdminPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [apiKey, setApiKey] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
+  const [apiKey, setApiKey] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return localStorage.getItem("admin_api_key") || "";
+  });
+  const [authenticated, setAuthenticated] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !!localStorage.getItem("admin_api_key");
+  });
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const savedKey = localStorage.getItem("admin_api_key");
-    if (savedKey) {
-      setApiKey(savedKey);
-      setAuthenticated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (authenticated) {
-      fetchData();
-    }
-  }, [authenticated]);
-
-  const authenticate = () => {
-    if (apiKey) {
-      localStorage.setItem("admin_api_key", apiKey);
-      setAuthenticated(true);
-    }
-  };
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setRefreshing(true);
     const key = apiKey || localStorage.getItem("admin_api_key");
 
@@ -141,6 +126,21 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
       setRefreshing(false);
+    }
+  }, [apiKey]);
+
+  useEffect(() => {
+    if (authenticated) {
+      queueMicrotask(() => {
+        void fetchData();
+      });
+    }
+  }, [authenticated, fetchData]);
+
+  const authenticate = () => {
+    if (apiKey) {
+      localStorage.setItem("admin_api_key", apiKey);
+      setAuthenticated(true);
     }
   };
 
@@ -254,25 +254,25 @@ export default function AdminPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <StatCard 
                     label="Total Users" 
-                    value={dashboardStats?.totalUsers}
+                    value={dashboardStats?.totalUsers ?? 0}
                     icon={<Users className="w-4 h-4" />}
-                    trend={`${dashboardStats?.weeklyGrowth.userGrowth.toFixed(1)}% weekly growth`}
-                    trendUp={dashboardStats?.weeklyGrowth.userGrowth! > 0}
+                    trend={`${(dashboardStats?.weeklyGrowth.userGrowth ?? 0).toFixed(1)}% weekly growth`}
+                    trendUp={(dashboardStats?.weeklyGrowth.userGrowth ?? 0) > 0}
                   />
                   <StatCard 
                     label="Active Users" 
-                    value={dashboardStats?.activeUsers}
+                    value={dashboardStats?.activeUsers ?? 0}
                   />
                   <StatCard 
                     label="Total Transactions" 
-                    value={dashboardStats?.totalTransactions}
-                    trend={`${dashboardStats?.weeklyGrowth.transactionGrowth.toFixed(1)}% growth`}
-                    trendUp={dashboardStats?.weeklyGrowth.transactionGrowth! > 0}
+                    value={dashboardStats?.totalTransactions ?? 0}
+                    trend={`${(dashboardStats?.weeklyGrowth.transactionGrowth ?? 0).toFixed(1)}% growth`}
+                    trendUp={(dashboardStats?.weeklyGrowth.transactionGrowth ?? 0) > 0}
                   />
                   <StatCard 
                     label="Transaction Volume" 
                     value={`$${(dashboardStats?.totalVolume || 0).toLocaleString('en-US', { maximumFractionDigits: 0 })}`}
-                    trend={`Avg: $${dashboardStats?.averageTransactionAmount.toFixed(2)}`}
+                    trend={`Avg: $${(dashboardStats?.averageTransactionAmount ?? 0).toFixed(2)}`}
                   />
                 </div>
               </div>
@@ -281,12 +281,12 @@ export default function AdminPage() {
               <div className="mb-16">
                 <h2 className="text-2xl font-bold mb-6">Contact Form Submissions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <StatCard label="Total Submissions" value={submissionStats?.total} />
-                  <StatCard label="Today" value={submissionStats?.today} />
-                  <StatCard label="This Week" value={submissionStats?.thisWeek} />
+                  <StatCard label="Total Submissions" value={submissionStats?.total ?? 0} />
+                  <StatCard label="Today" value={submissionStats?.today ?? 0} />
+                  <StatCard label="This Week" value={submissionStats?.thisWeek ?? 0} />
                   <StatCard 
                     label="Email Delivery Rate" 
-                    value={`${submissionStats?.emailSuccessRate.toFixed(1)}%`}
+                    value={`${(submissionStats?.emailSuccessRate ?? 0).toFixed(1)}%`}
                   />
                 </div>
               </div>
@@ -343,68 +343,6 @@ export default function AdminPage() {
               </div>
             </>
           )}
-        </div>
-      </section>
-    </main>
-                  label="Email Success Rate"
-                  value={`${stats.emailSuccessRate}%`}
-                  trend={`${stats.emailSentCount} of ${stats.total} sent`}
-                />
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-4"
-              >
-                <h2 className="text-2xl font-black tracking-tighter italic mb-6">
-                  RECENT SUBMISSIONS
-                </h2>
-                {submissions.length > 0 ? (
-                  <div className="space-y-4">
-                    {submissions.map((submission) => (
-                      <motion.div
-                        key={submission.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/40 hover:border-pink-600 dark:hover:border-pink-500 transition-all"
-                      >
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
-                            <p className="font-black text-lg">{submission.name}</p>
-                            <p className="text-sm text-slate-500 dark:text-white/40">{submission.email}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xs font-bold tracking-widest uppercase text-slate-400">
-                              {new Date(submission.createdAt).toLocaleDateString()}
-                            </p>
-                            <div className="flex gap-2 mt-2 justify-end">
-                              {submission.confirmationEmailSent && (
-                                <span className="px-2 py-1 bg-green-500/20 text-green-700 dark:text-green-300 text-xs rounded">
-                                  ✓ Confirmation
-                                </span>
-                              )}
-                              {submission.notificationEmailSent && (
-                                <span className="px-2 py-1 bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs rounded">
-                                  ✓ Notified
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <p className="text-slate-600 dark:text-white/60 text-sm line-clamp-2">
-                          {submission.message}
-                        </p>
-                        <p className="text-xs text-slate-400 mt-3">IP: {submission.sourceIp}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-slate-500 dark:text-white/40">No submissions yet.</p>
-                )}
-              </motion.div>
-            </>
-          ) : null}
         </div>
       </section>
     </main>
