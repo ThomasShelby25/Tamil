@@ -1,0 +1,12 @@
+This is a placeholder file indicating the project expects a logo at `public/velsaim.png`.
+
+Instructions:
+- Replace this file with the actual PNG image named `velsaim.png`.
+- On Windows PowerShell, you can copy the file into the project with:
+  cp "C:\path\to\your\velsaim.png" "e:\Projects\Tamil\public\velsaim.png"
+
+After replacing, run:
+
+npm run build
+
+If you want me to upload the provided attachment into `public/velsaim.png`, allow me to proceed and confirm; otherwise replace manually.
