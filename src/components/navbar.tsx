@@ -34,14 +34,14 @@ export const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-center group">
+        <Link href="/" className="flex items-center group max-w-[220px] sm:max-w-[320px] md:max-w-[400px]">
           <Image
             src="/velsaim.png"
             alt="Velsaim"
             width={804}
             height={175}
             priority
-            className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+            className="h-6 sm:h-8 md:h-10 lg:h-12 xl:h-16 w-auto object-contain"
           />
         </Link>
         
