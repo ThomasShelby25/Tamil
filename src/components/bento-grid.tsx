@@ -23,7 +23,7 @@ export const BentoCard = ({ title, description, icon, className, delay = 0 }: Be
         className
       )}
     >
-      <div className="absolute inset-0 bg-linear-to-br from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="relative z-10">
         {icon && <div className="mb-3 sm:mb-4 text-purple-400 text-lg sm:text-xl">{icon}</div>}
         <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{title}</h3>

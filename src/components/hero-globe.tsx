@@ -5,11 +5,6 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-const pseudoRandom = (seed: number) => {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-};
-
 function Globe() {
   const meshRef = useRef<THREE.Mesh>(null);
   const pointsRef = useRef<THREE.Points>(null);
@@ -27,9 +22,9 @@ function Globe() {
   const positions = useMemo(() => {
     const pos = new Float32Array(2000 * 3);
     for (let i = 0; i < 2000; i++) {
-      const theta = pseudoRandom(i + 1) * Math.PI * 2;
-      const phi = Math.acos(pseudoRandom(i + 1001) * 2 - 1);
-      const r = 2.2 + pseudoRandom(i + 2001) * 0.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+      const r = 2.2 + Math.random() * 0.5;
       pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       pos[i * 3 + 2] = r * Math.cos(phi);

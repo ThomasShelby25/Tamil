@@ -95,7 +95,7 @@ export default function TechnologyPage() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="group p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50/90 dark:bg-white/20 hover:border-pink-600 dark:hover:border-pink-500 hover:shadow-lg transition-all duration-300 shimmer-border"
+                className="group p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50/90 dark:bg-white/2 hover:border-pink-600 dark:hover:border-pink-500 hover:shadow-lg transition-all duration-300 shimmer-border"
               >
                 <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/10 flex items-center justify-center mb-6 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500 text-pink-600">
                   {tech.icon}

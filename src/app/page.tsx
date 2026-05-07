@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Navbar } from "@/components/navbar";
 import { ArrowRight, Globe, Zap, Shield, BarChart3, Wallet, Cpu } from "lucide-react";
@@ -66,7 +66,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 md:mb-8 bg-linear-to-b from-white to-white/50 bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 md:mb-8 bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent"
           >
             Cross-border
             <br />
@@ -91,7 +91,7 @@ export default function Home() {
           >
             <Link href="/get-started" className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 text-sm sm:text-base text-center">
               <span className="relative z-10">Get Started</span>
-              <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-10 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-10 transition-opacity" />
             </Link>
             <Link href="/docs" className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-white/10 hover:bg-white/5 font-bold rounded-full transition-all text-sm sm:text-base text-center">
               Documentation
@@ -107,7 +107,7 @@ export default function Home() {
           className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span className="text-[10px] uppercase tracking-widest text-slate-500">Scroll</span>
-          <div className="w-px h-12 bg-linear-to-b from-purple-500 to-transparent" />
+          <div className="w-px h-12 bg-gradient-to-b from-purple-500 to-transparent" />
         </motion.div>
       </section>
 
@@ -154,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 md:py-32 border-y border-white/5 bg-white/2">
+      <section className="py-16 md:py-32 border-y border-white/5 bg-white/[0.02]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {error && (
             <div className="mb-6 md:mb-8 p-4 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs sm:text-sm">

@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDashboardStats } from "@/lib/analytics/dashboard";
 import { createSuccessResponse, createErrorResponse } from "@/lib/api/response";
-import { validateAdminRequest } from "@/lib/auth/admin-auth";
 
 export const GET = async (request: NextRequest) => {
-  const authError = validateAdminRequest(request);
-  if (authError) return authError;
-
   try {
     const stats = await getDashboardStats();
 
