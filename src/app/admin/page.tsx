@@ -204,6 +204,8 @@ export default function AdminPage() {
             <button
               onClick={fetchData}
               disabled={refreshing}
+              aria-label="Refresh dashboard data"
+              title="Refresh dashboard data"
               className="p-3 rounded-full border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-slate-950/40 transition-all disabled:opacity-50"
             >
               <RefreshCw className={`w-5 h-5 ${refreshing ? "animate-spin" : ""}`} />

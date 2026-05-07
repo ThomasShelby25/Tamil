@@ -48,8 +48,8 @@ export default function TechnologyPage() {
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-pink-500 selection:text-white transition-colors duration-300">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="ambient-orb theme-orb-pink top-[-6rem] left-[-6rem] h-96 w-96" />
-        <div className="ambient-orb theme-orb-violet top-1/4 right-[-4rem] h-[26rem] w-[26rem]" />
+        <div className="ambient-orb theme-orb-pink -top-24 -left-24 h-96 w-96" />
+        <div className="ambient-orb theme-orb-violet top-1/4 -right-16 h-104 w-104" />
       </div>
       <div className="mesh-bg">
         <motion.div 
