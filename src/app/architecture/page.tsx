@@ -12,8 +12,8 @@ export default function ArchitecturePage() {
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-pink-500 selection:text-white transition-colors duration-300">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="ambient-orb theme-orb-blue top-[-5rem] right-[-6rem] h-[28rem] w-[28rem]" />
-        <div className="ambient-orb theme-orb-pink bottom-[-8rem] left-[-4rem] h-[24rem] w-[24rem]" />
+        <div className="ambient-orb theme-orb-blue -top-20 -right-24 h-112 w-md" />
+        <div className="ambient-orb theme-orb-pink -bottom-32 -left-16 h-96 w-96" />
       </div>
       <div className="mesh-bg">
         <motion.div 
@@ -125,7 +125,7 @@ export default function ArchitecturePage() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/2"
+                className="p-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/20"
               >
                 <h3 className="text-2xl font-black mb-4 italic">{feature.title}</h3>
                 <p className="text-slate-600 dark:text-white/60">{feature.desc}</p>

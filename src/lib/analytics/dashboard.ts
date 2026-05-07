@@ -26,144 +26,166 @@ export interface RealTimeMetrics {
   securityScore: string;
 }
 
+const emptyDashboardStats: DashboardStats = {
+  totalUsers: 0,
+  activeUsers: 0,
+  totalTransactions: 0,
+  totalVolume: 0,
+  averageTransactionAmount: 0,
+  transactionSuccessRate: 0,
+  transactionFailureRate: 0,
+  systemUptime: 99.99,
+  averageResponseTime: 0,
+  contactSubmissions: 0,
+  emailDeliveryRate: 0,
+  weeklyGrowth: {
+    userGrowth: 0,
+    transactionGrowth: 0,
+    volumeGrowth: 0,
+  },
+};
+
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const now = new Date();
-  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  try {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-  // User stats
-  const totalUsers = await prisma.user.count();
-  const activeUsers = await prisma.user.count({
-    where: { isActive: true },
-  });
+    // User stats
+    const totalUsers = await prisma.user.count();
+    const activeUsers = await prisma.user.count({
+      where: { isActive: true },
+    });
 
-  // Transaction stats
-  const allTransactions = await prisma.transaction.groupBy({
-    by: ["status"],
-    _count: true,
-    _sum: {
-      amount: true,
-    },
-  });
-
-  const totalTransactions = await prisma.transaction.count();
-  const totalVolume = (
-    await prisma.transaction.aggregate({
+    // Transaction stats
+    const allTransactions = await prisma.transaction.groupBy({
+      by: ["status"],
+      _count: true,
       _sum: {
         amount: true,
       },
-    })
-  )._sum.amount || 0;
+    });
 
-  const completedTransactions = allTransactions.find((t) => t.status === "completed");
-  const completedVolume = completedTransactions?._sum.amount || 0;
-  const completedCount = completedTransactions?._count || 0;
-
-  const averageTransactionAmount = totalTransactions > 0 ? totalVolume / totalTransactions : 0;
-  const transactionSuccessRate = totalTransactions > 0 ? (completedCount / totalTransactions) * 100 : 0;
-  const transactionFailureRate = 100 - transactionSuccessRate;
-
-  // System health
-  const latestHealth = await prisma.systemHealth.findFirst({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  const systemUptime = latestHealth?.uptime || 99.99;
-  const averageResponseTime = latestHealth?.responseTime || 0;
-
-  // Contact submissions
-  const contactSubmissions = await prisma.contactSubmission.count();
-  const emailDeliveryRate =
-    contactSubmissions > 0
-      ? ((
-          await prisma.contactSubmission.count({
-            where: {
-              OR: [{ confirmationEmailSent: true }, { notificationEmailSent: true }],
-            },
-          })
-        ) /
-          contactSubmissions) *
-        100
-      : 0;
-
-  // Weekly growth
-  const thisWeekUsers = await prisma.user.count({
-    where: {
-      createdAt: { gte: weekAgo },
-    },
-  });
-
-  const lastWeekUsers =
-    (await prisma.user.count({
-      where: {
-        createdAt: {
-          gte: new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000),
-          lt: weekAgo,
-        },
-      },
-    })) || 1;
-
-  const userGrowth = ((thisWeekUsers - lastWeekUsers) / lastWeekUsers) * 100;
-
-  const thisWeekTransactions = await prisma.transaction.count({
-    where: { createdAt: { gte: weekAgo } },
-  });
-
-  const lastWeekTransactions =
-    (await prisma.transaction.count({
-      where: {
-        createdAt: {
-          gte: new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000),
-          lt: weekAgo,
-        },
-      },
-    })) || 1;
-
-  const transactionGrowth = ((thisWeekTransactions - lastWeekTransactions) / lastWeekTransactions) * 100;
-
-  const thisWeekVolume =
-    (
+    const totalTransactions = await prisma.transaction.count();
+    const totalVolume = (
       await prisma.transaction.aggregate({
-        _sum: { amount: true },
-        where: { createdAt: { gte: weekAgo } },
+        _sum: {
+          amount: true,
+        },
       })
     )._sum.amount || 0;
 
-  const lastWeekVolume =
-    (
-      await prisma.transaction.aggregate({
-        _sum: { amount: true },
+    const completedTransactions = allTransactions.find((t) => t.status === "completed");
+    const completedCount = completedTransactions?._count || 0;
+
+    const averageTransactionAmount = totalTransactions > 0 ? totalVolume / totalTransactions : 0;
+    const transactionSuccessRate = totalTransactions > 0 ? (completedCount / totalTransactions) * 100 : 0;
+    const transactionFailureRate = 100 - transactionSuccessRate;
+
+    // System health
+    const latestHealth = await prisma.systemHealth.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const systemUptime = latestHealth?.uptime || 99.99;
+    const averageResponseTime = latestHealth?.responseTime || 0;
+
+    // Contact submissions
+    const contactSubmissions = await prisma.contactSubmission.count();
+    const emailDeliveryRate =
+      contactSubmissions > 0
+        ? ((
+            await prisma.contactSubmission.count({
+              where: {
+                OR: [{ confirmationEmailSent: true }, { notificationEmailSent: true }],
+              },
+            })
+          ) /
+            contactSubmissions) *
+          100
+        : 0;
+
+    // Weekly growth
+    const thisWeekUsers = await prisma.user.count({
+      where: {
+        createdAt: { gte: weekAgo },
+      },
+    });
+
+    const lastWeekUsers =
+      (await prisma.user.count({
         where: {
           createdAt: {
             gte: new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000),
             lt: weekAgo,
           },
         },
-      })
-    )._sum.amount || 1;
+      })) || 1;
 
-  const volumeGrowth = ((thisWeekVolume - lastWeekVolume) / lastWeekVolume) * 100;
+    const userGrowth = ((thisWeekUsers - lastWeekUsers) / lastWeekUsers) * 100;
 
-  return {
-    totalUsers,
-    activeUsers,
-    totalTransactions,
-    totalVolume,
-    averageTransactionAmount: Math.round(averageTransactionAmount * 100) / 100,
-    transactionSuccessRate: Math.round(transactionSuccessRate * 100) / 100,
-    transactionFailureRate: Math.round(transactionFailureRate * 100) / 100,
-    systemUptime: Math.round(systemUptime * 100) / 100,
-    averageResponseTime: Math.round(averageResponseTime * 100) / 100,
-    contactSubmissions,
-    emailDeliveryRate: Math.round(emailDeliveryRate * 100) / 100,
-    weeklyGrowth: {
-      userGrowth: Math.round(userGrowth * 100) / 100,
-      transactionGrowth: Math.round(transactionGrowth * 100) / 100,
-      volumeGrowth: Math.round(volumeGrowth * 100) / 100,
-    },
-  };
+    const thisWeekTransactions = await prisma.transaction.count({
+      where: { createdAt: { gte: weekAgo } },
+    });
+
+    const lastWeekTransactions =
+      (await prisma.transaction.count({
+        where: {
+          createdAt: {
+            gte: new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000),
+            lt: weekAgo,
+          },
+        },
+      })) || 1;
+
+    const transactionGrowth = ((thisWeekTransactions - lastWeekTransactions) / lastWeekTransactions) * 100;
+
+    const thisWeekVolume =
+      (
+        await prisma.transaction.aggregate({
+          _sum: { amount: true },
+          where: { createdAt: { gte: weekAgo } },
+        })
+      )._sum.amount || 0;
+
+    const lastWeekVolume =
+      (
+        await prisma.transaction.aggregate({
+          _sum: { amount: true },
+          where: {
+            createdAt: {
+              gte: new Date(weekAgo.getTime() - 7 * 24 * 60 * 60 * 1000),
+              lt: weekAgo,
+            },
+          },
+        })
+      )._sum.amount || 1;
+
+    const volumeGrowth = ((thisWeekVolume - lastWeekVolume) / lastWeekVolume) * 100;
+
+    return {
+      totalUsers,
+      activeUsers,
+      totalTransactions,
+      totalVolume,
+      averageTransactionAmount: Math.round(averageTransactionAmount * 100) / 100,
+      transactionSuccessRate: Math.round(transactionSuccessRate * 100) / 100,
+      transactionFailureRate: Math.round(transactionFailureRate * 100) / 100,
+      systemUptime: Math.round(systemUptime * 100) / 100,
+      averageResponseTime: Math.round(averageResponseTime * 100) / 100,
+      contactSubmissions,
+      emailDeliveryRate: Math.round(emailDeliveryRate * 100) / 100,
+      weeklyGrowth: {
+        userGrowth: Math.round(userGrowth * 100) / 100,
+        transactionGrowth: Math.round(transactionGrowth * 100) / 100,
+        volumeGrowth: Math.round(volumeGrowth * 100) / 100,
+      },
+    };
+  } catch (error) {
+    console.error("Falling back to empty dashboard stats:", error);
+    return emptyDashboardStats;
+  }
 }
 
 export async function getRealTimeMetrics(): Promise<RealTimeMetrics> {
@@ -193,7 +215,7 @@ export async function trackEvent(
   eventType: string,
   eventName: string,
   userId?: string,
-  properties?: Record<string, any>
+  properties?: Record<string, unknown>
 ) {
   try {
     await prisma.analyticsEvent.create({
